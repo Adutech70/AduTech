@@ -19,10 +19,11 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-height: 100vh;
-            position: relative;
+            min-height: 100vh; /* Full height for body */
+            position: relative; /* Allow positioning of child elements */
         }
 
+        /* Dark overlay for the background image */
         body::before {
             content: '';
             position: absolute;
@@ -59,7 +60,6 @@
             padding: 20px;
             justify-content: space-between;
             gap: 20px;
-            flex-wrap: wrap; /* Ensures flexbox elements wrap on smaller screens */
         }
 
         .section {
@@ -67,9 +67,7 @@
             border-radius: 15px;
             padding: 20px;
             width: 30%;
-            min-width: 280px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-            flex-grow: 1;
         }
 
         .section h2 {
@@ -118,6 +116,7 @@
             box-shadow: 0px 10px 15px rgba(255, 255, 255, 0.2);
         }
 
+        /* Modal Styles */
         #image-modal,
         #data-modal,
         #all-images-modal {
@@ -141,34 +140,34 @@
             color: white;
             max-height: 80%;
             overflow-y: auto;
-            width: 80%;
-            max-width: 800px;
-            position: relative;
+            width: 80%; /* Set a specific width for the modal */
+            max-width: 800px; /* Max width for larger screens */
+            position: relative; /* To position the close button */
         }
 
         #all-images-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex; /* Arrange images in a row */
+            flex-wrap: wrap; /* Allow wrapping if necessary */
+            justify-content: center; /* Center images */
         }
 
         #all-images-container .image-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 10px;
+            flex-direction: column; /* Stack image and download link */
+            align-items: center; /* Center the contents */
+            margin: 10px; /* Margin between images */
             background: rgba(0, 0, 0, 0.5);
             padding: 10px;
             border-radius: 10px;
         }
 
         #all-images-container img {
-            width: 120px;
-            height: 120px;
+            width: 120px; /* Set a specific width for images */
+            height: 120px; /* Ensure height is the same */
             object-fit: cover;
             border: 2px solid #444;
             border-radius: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 5px; /* Margin between image and download link */
         }
 
         .image-info {
@@ -188,6 +187,7 @@
             cursor: pointer;
         }
 
+        /* Logout Link Styles */
         #logout {
             position: fixed;
             bottom: 10px;
@@ -196,52 +196,15 @@
             cursor: pointer;
             text-decoration: underline;
             font-size: 1.2em;
-            z-index: 2;
+            z-index: 2; /* Ensure it's above other elements */
         }
 
+        /* Recent Image Time Styles */
         #recent-image-time {
             margin-top: 10px;
             font-size: 1em;
             color: #ccc;
             text-align: center;
-        }
-
-        /* Media Queries for Responsive Design */
-        @media (max-width: 768px) {
-            .dashboard {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .section {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-
-            header h1 {
-                font-size: 2em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.5em;
-            }
-
-            .section h2 {
-                font-size: 1.5em;
-            }
-
-            .data-table th,
-            .data-table td {
-                padding: 5px;
-                font-size: 0.8em;
-            }
-
-            #modal-content {
-                width: 90%;
-                padding: 15px;
-            }
         }
     </style>
 </head>
@@ -327,13 +290,13 @@
     <script>
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAeHJM-GN1rQ5ETxKc2uJcb4Btm2WixXf8",
-            authDomain: "smoke-vape-detection.firebaseapp.com",
-            databaseURL: "https://smoke-vape-detection-default-rtdb.firebaseio.com",
-            projectId: "smoke-vape-detection",
-            storageBucket: "smoke-vape-detection.appspot.com",
-            messagingSenderId: "844611007661",
-            appId: "1:844611007661:web:7568a7e7028e1174a0c224"
+            apiKey: "AIzaSyBjjr7Hm65Ek6DObNsSnfQQ3q-FB-ikmG8",
+            authDomain: "adutech-69225.firebaseapp.com",
+            databaseURL: "https://adutech-69225-default-rtdb.firebaseio.com",
+            projectId: "adutech-69225",
+            storageBucket: "adutech-69225.appspot.com",
+            messagingSenderId: "717586868656",
+            appId: "1:717586868656:web:7c85a40f34d69f18dd0e75"
         };
 
         // Initialize Firebase
