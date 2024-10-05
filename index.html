@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #4facfe, #f093fb);
+            background: linear-gradient(to bottom, #4facfe, #f093fb); /* Gradient from blue to pink */
             color: #333;
         }
 
@@ -22,9 +21,7 @@
             padding: 20px;
         }
 
-        .login-box,
-        .register-box,
-        .reset-box {
+        .login-box, .register-box {
             background-color: white;
             width: 100%;
             max-width: 400px;
@@ -35,7 +32,7 @@
         }
 
         .logo {
-            width: 80px;
+            width: 100px; /* Logo width for larger screens */
             max-width: 100%;
             margin-bottom: 20px;
         }
@@ -66,7 +63,7 @@
 
         button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background-color: #1877F2;
             border: none;
             border-radius: 5px;
@@ -100,195 +97,187 @@
             text-decoration: underline;
         }
 
-        /* Media queries for better mobile responsiveness */
+        /* Media queries for mobile responsiveness */
         @media (max-width: 768px) {
             .container {
-                height: auto;
-                padding: 20px 10px;
+                padding: 10px;
             }
 
-            .login-box,
-            .register-box,
-            .reset-box {
+            .login-box, .register-box {
                 padding: 20px;
             }
 
             .logo {
-                width: 60px;
+                width: 80px; /* Resize logo for tablets */
             }
 
             button {
                 font-size: 14px;
-                padding: 10px;
+                padding: 8px;
             }
         }
 
         @media (max-width: 480px) {
             .container {
-                height: auto;
                 padding: 10px;
             }
 
-            .login-box,
-            .register-box,
-            .reset-box {
+            .login-box, .register-box {
                 padding: 15px;
             }
 
             .logo {
-                width: 50px;
+                width: 60px; /* Resize logo for smaller mobile devices */
             }
 
             button {
                 font-size: 14px;
-                padding: 10px;
+                padding: 8px;
             }
         }
     </style>
 </head>
-
 <body>
 
-    <div class="container">
-        <!-- Login Box -->
-        <div class="login-box" id="login-box">
-            <img src="logo.png" alt="Logo" class="logo"> <!-- Add your logo image here -->
-            <h2>Login</h2>
-            <div class="input-group">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" placeholder="Enter your email" required>
-            </div>
-            <div class="input-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" placeholder="Enter your password" required>
-            </div>
-            <button onclick="loginUser()">Login</button>
-            <div class="message" id="login-message"></div>
-            <div class="link">
-                <a href="#" onclick="showReset()">Forgot Password?</a>
-            </div>
-            <div class="link">
-                <a href="#" onclick="showRegister()">Don't have an account? Register</a>
-            </div>
+<div class="container">
+    <!-- Login Box -->
+    <div class="login-box" id="login-box">
+        <img src="logo.png" alt="Logo" class="logo"> <!-- Add your logo image here -->
+        <h2>Login</h2>
+        <div class="input-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="Enter your email" required>
         </div>
-
-        <!-- Register Box (Initially hidden) -->
-        <div class="register-box" id="register-box" style="display: none;">
-            <img src="logo.png" alt="Logo" class="logo"> <!-- Add your logo image here -->
-            <h2>Register</h2>
-            <div class="input-group">
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" placeholder="Enter your email" required>
-            </div>
-            <div class="input-group">
-                <label for="register-password">Password</label>
-                <input type="password" id="register-password" placeholder="Enter your password" required>
-            </div>
-            <button onclick="registerUser()">Register</button>
-            <div class="message" id="register-message"></div>
-            <div class="link">
-                <a href="#" onclick="showLogin()">Already have an account? Login</a>
-            </div>
+        <div class="input-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" required>
         </div>
-
-        <!-- Reset Password Box (Initially hidden) -->
-        <div class="reset-box" id="reset-box" style="display: none;">
-            <img src="logo.png" alt="Logo" class="logo"> <!-- Add your logo image here -->
-            <h2>Reset Password</h2>
-            <div class="input-group">
-                <label for="reset-email">Email</label>
-                <input type="email" id="reset-email" placeholder="Enter your email" required>
-            </div>
-            <button onclick="resetPassword()">Reset Password</button>
-            <div class="message" id="reset-message"></div>
-            <div class="link">
-                <a href="#" onclick="showLogin()">Back to Login</a>
-            </div>
+        <button onclick="loginUser()">Login</button>
+        <div class="message" id="login-message"></div>
+        <div class="link">
+            <a href="#" onclick="showReset()">Forgot Password?</a>
+        </div>
+        <div class="link">
+            <a href="#" onclick="showRegister()">Don't have an account? Register</a>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <!-- Register Box (Initially hidden) -->
+    <div class="register-box" id="register-box" style="display: none;">
+        <img src="logo.png" alt="Logo" class="logo"> <!-- Add your logo image here -->
+        <h2>Register</h2>
+        <div class="input-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" placeholder="Enter your password" required>
+        </div>
+        <button onclick="registerUser()">Register</button>
+        <div class="message" id="register-message"></div>
+        <div class="link">
+            <a href="#" onclick="showLogin()">Already have an account? Login</a>
+        </div>
+    </div>
 
-    <script>
-        // Firebase configuration (replace with your actual Firebase project config)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAeHJM-GN1rQ5ETxKc2uJcb4Btm2WixXf8",
-            authDomain: "smoke-vape-detection.firebaseapp.com",
-            projectId: "smoke-vape-detection",
-            storageBucket: "smoke-vape-detection.appspot.com",
-            messagingSenderId: "844611007661",
-            appId: "1:844611007661:web:7568a7e7028e1174a0c224"
-        };
+    <!-- Reset Password Box (Initially hidden) -->
+    <div class="register-box" id="reset-box" style="display: none;">
+        <img src="logo.png" alt="Logo" class="logo"> <!-- Add your logo image here -->
+        <h2>Reset Password</h2>
+        <div class="input-group">
+            <label for="reset-email">Email</label>
+            <input type="email" id="reset-email" placeholder="Enter your email" required>
+        </div>
+        <button onclick="resetPassword()">Reset Password</button>
+        <div class="message" id="reset-message"></div>
+        <div class="link">
+            <a href="#" onclick="showLogin()">Back to Login</a>
+        </div>
+    </div>
+</div>
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-        // Login user
-        function loginUser() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+<script>
+    // Firebase configuration (replace with your actual Firebase project config)
+    const firebaseConfig = {
+        apiKey: "AIzaSyBjjr7Hm65Ek6DObNsSnfQQ3q-FB-ikmG8",
+        authDomain: "adutech-69225.firebaseapp.com",
+        projectId: "adutech-69225",
+        storageBucket: "adutech-69225.appspot.com",
+        messagingSenderId: "717586868656",
+        appId: "1:717586868656:web:7c85a40f34d69f18dd0e75"
+    };
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Redirect to main.page if login is successful
-                    window.location.href = "vape.html";
-                })
-                .catch((error) => {
-                    document.getElementById('login-message').innerHTML = error.message;
-                });
-        }
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-        // Register user
-        function registerUser() {
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
+    // Login user
+    function loginUser() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    document.getElementById('register-message').innerHTML = "Registration successful!";
-                })
-                .catch((error) => {
-                    document.getElementById('register-message').innerHTML = error.message;
-                });
-        }
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Redirect to main.page if login is successful
+                window.location.href = "main.html";
+            })
+            .catch((error) => {
+                document.getElementById('login-message').innerHTML = error.message;
+            });
+    }
 
-        // Reset password
-        function resetPassword() {
-            const email = document.getElementById('reset-email').value;
+    // Register user
+    function registerUser() {
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
 
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    document.getElementById('reset-message').innerHTML = "Password reset email sent!";
-                })
-                .catch((error) => {
-                    document.getElementById('reset-message').innerHTML = error.message;
-                });
-        }
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                document.getElementById('register-message').innerHTML = "Registration successful!";
+            })
+            .catch((error) => {
+                document.getElementById('register-message').innerHTML = error.message;
+            });
+    }
 
-        // Switch to register form
-        function showRegister() {
-            document.getElementById('login-box').style.display = 'none';
-            document.getElementById('register-box').style.display = 'block';
-            document.getElementById('reset-box').style.display = 'none';
-        }
+    // Reset password
+    function resetPassword() {
+        const email = document.getElementById('reset-email').value;
 
-        // Switch to login form
-        function showLogin() {
-            document.getElementById('login-box').style.display = 'block';
-            document.getElementById('register-box').style.display = 'none';
-            document.getElementById('reset-box').style.display = 'none';
-        }
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                document.getElementById('reset-message').innerHTML = "Password reset email sent!";
+            })
+            .catch((error) => {
+                document.getElementById('reset-message').innerHTML = error.message;
+            });
+    }
 
-        // Switch to reset password form
-        function showReset() {
-            document.getElementById('login-box').style.display = 'none';
-            document.getElementById('register-box').style.display = 'none';
-            document.getElementById('reset-box').style.display = 'block';
-        }
-    </script>
+    // Switch to register form
+    function showRegister() {
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('register-box').style.display = 'block';
+        document.getElementById('reset-box').style.display = 'none';
+    }
+
+    // Switch to login form
+    function showLogin() {
+        document.getElementById('login-box').style.display = 'block';
+        document.getElementById('register-box').style.display = 'none';
+        document.getElementById('reset-box').style.display = 'none';
+    }
+
+    // Switch to reset password form
+    function showReset() {
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('register-box').style.display = 'none';
+        document.getElementById('reset-box').style.display = 'block';
+    }
+</script>
 </body>
-
 </html>
