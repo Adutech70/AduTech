@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smoke and Vape Detection Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #3498db, #ffffff);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        header {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            width: 30%;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #4a90e2;
+        }
+
+        .view-all {
+            color: #4a90e2;
+            cursor: pointer;
+            text-decoration: underline;
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        #recent-image {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: cover;
+        }
+
+        #recent-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        #image-modal,
+        #data-modal,
+        #all-images-modal,
+        #password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #modal-content,
+        #password-modal-content {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            max-height: 80%;
+            overflow-y: auto;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        #all-images-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #all-images-container .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+
+        #all-images-container img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 2px solid #444;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+        .image-info {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        #close-modal,
+        #close-data-modal,
+        #close-images-modal,
+        #close-password-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #password-modal-content {
+            width: 400px;
+        }
+
+        #password-input {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+        }
+
+        #submit-password {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #submit-password:hover {
+            background-color: #357ab8;
+        }
+
+        #logout {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
+            color: white;
+            background-color: #4a90e2;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            z-index: 2;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #logout:hover {
+            background-color: #357ab8;
+        }
+
+        #recent-image-time {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #ccc;
+            text-align: center;
+        }
+
+        #password-error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Smoke and Vape Detection Dashboard</h1>
+    </header>
+
+    <!-- Main Dashboard Area -->
+    <div class="dashboard">
+        <!-- Data History Section -->
+        <div class="section">
+            <h2>Data History</h2>
+            <table class="data-table" id="data-history-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Trigger Type</th>
+                    </tr>
+                </thead>
+                <tbody id="data-table-body">
+                    <!-- Data from Firebase will be inserted here -->
+                </tbody>
+            </table>
+            <span class="view-all" id="view-all-data">View All</span>
+        </div>
+
+        <!-- Recent Location Section -->
+        <div class="section">
+            <h2>Recent Location</h2>
+            <p id="recent-location">Loading...</p>
+        </div>
+
+        <!-- Recent Image Section -->
+        <div class="section">
+            <h2>Recent Image</h2>
+            <img id="recent-image" src="" alt="Recent Image">
+            <p id="recent-image-time"></p>
+            <span class="view-all" id="view-all-images">View All</span>
+        </div>
+    </div>
+
+    <!-- Modal for Image Preview -->
+    <div id="image-modal">
+        <div id="modal-content">
+            <span id="close-modal">&times;</span>
+            <img id="modal-image" src="" alt="Preview Image">
+        </div>
+    </div>
+
+    <!-- Modal for Viewing All Data -->
+    <div id="data-modal">
+        <div id="modal-content">
+            <span id="close-data-modal">&times;</span>
+            <table class="data-table" id="all-data-table">
+                <!-- Full data will be inserted here -->
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal for Viewing All Images -->
+    <div id="all-images-modal">
+        <div id="modal-content">
+            <span id="close-images-modal">&times;</span>
+            <div id="all-images-container">
+                <!-- All images will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Password Input -->
+    <div id="password-modal">
+        <div id="password-modal-content">
+            <span id="close-password-modal">&times;</span>
+            <h2>Please Enter Your Password</h2>
+            <input type="password" id="password-input" placeholder="Enter password">
+            <button id="submit-password">Submit</button>
+            <p id="password-error">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Logout Link -->
+    <div id="logout">Logout</div>
+
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjjr7Hm65Ek6DObNsSnfQQ3q-FB-ikmG8",
+            authDomain: "adutech-69225.firebaseapp.com",
+            databaseURL: "https://adutech-69225-default-rtdb.firebaseio.com",
+            projectId: "adutech-69225",
+            storageBucket: "adutech-69225.appspot.com",
+            messagingSenderId: "717586868656",
+            appId: "1:717586868656:web:7c85a40f34d69f18dd0e75"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let user;
+
+        // Make sure we track the current logged-in user
+        firebase.auth().onAuthStateChanged(function (loggedInUser) {
+            if (loggedInUser) {
+                user = loggedInUser;
+                console.log("User logged in:", user.email);
+            } else {
+                console.log("No user logged in.");
+            }
+        });
+
+        // Event listener for "View All" images button
+        document.getElementById('view-all-images').addEventListener('click', () => {
+            document.getElementById('password-modal').style.display = 'flex';
+        });
+
+        // Event listener for password submission
+        document.getElementById('submit-password').addEventListener('click', async () => {
+            const enteredPassword = document.getElementById('password-input').value.trim();
+            document.getElementById('password-error').style.display = 'none';  // Hide error message
+
+            if (enteredPassword === "") {
+                document.getElementById('password-error').textContent = 'Password cannot be empty';
+                document.getElementById('password-error').style.display = 'block';
+                return;
+            }
+
+            // Re-authenticate the user with the entered password
+            const isAuthenticated = await reauthenticateUser(enteredPassword);
+
+            if (isAuthenticated) {
+                // Close password modal and show all images modal after re-authentication
+                document.getElementById('password-modal').style.display = 'none';
+                document.getElementById('all-images-modal').style.display = 'flex';
+                showAllImages();
+            }
+        });
+
+        // Re-authentication function
+        async function reauthenticateUser(password) {
+            if (!user) {
+                console.error("No user is currently logged in.");
+                return false;
+            }
+
+            const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+
+            try {
+                await user.reauthenticateWithCredential(credential);
+                console.log("Re-authentication successful");
+                return true;
+            } catch (error) {
+                console.error("Re-authentication failed:", error);
+                document.getElementById('password-error').textContent = 'Incorrect password. Please try again.';
+                document.getElementById('password-error').style.display = 'block';
+                return false;
+            }
+        }
+
+        // Function to display all images after successful re-authentication
+        function showAllImages() {
+            const dataRef = db.ref('images');
+            dataRef.once('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    document.getElementById('all-images-container').innerHTML = '<p>No images available</p>';
+                    return;
+                }
+
+                const keys = Object.keys(data).reverse();
+                const allImagesContainer = document.getElementById('all-images-container');
+                allImagesContainer.innerHTML = '';
+
+                keys.forEach((key) => {
+                    const { image, metadata } = data[key];
+                    const parsedData = parseMetadata(metadata);
+                    const imgElement = `<div class="image-container">
+                                            <img src="data:image/jpeg;base64,${image}" alt="Image" />
+                                            <div class="image-info">Captured on: ${parsedData.date} at ${parsedData.time}</div>
+                                            <a href="data:image/jpeg;base64,${image}" download="image-${key}.jpg" class="download-link">Download</a>
+                                        </div>`;
+                    allImagesContainer.innerHTML += imgElement;
+                });
+            });
+        }
+
+        // Function to parse metadata from the image record
+        function parseMetadata(metadata) {
+            const parts = metadata.split(', ');
+            const triggerType = parts[0].split(': ')[1];
+            const location = parts[1].split(': ')[1];
+            const timestamp = parts[2].split(': ')[1];
+
+            let date;
+            if (!isNaN(timestamp) && timestamp.length <= 10) {
+                date = new Date(parseInt(timestamp) * 1000);
+            } else {
+                date = new Date(timestamp);
+            }
+
+            return {
+                triggerType: triggerType,
+                location: location,
+                date: date.toLocaleDateString(),
+                time: date.toLocaleTimeString()
+            };
+        }
+
+        // Close password modal
+        document.getElementById('close-password-modal').addEventListener('click', () => {
+            document.getElementById('password-modal').style.display = 'none';
+        });
+
+        // Close images modal
+        document.getElementById('close-images-modal').addEventListener('click', () => {
+            document.getElementById('all-images-modal').style.display = 'none';
+        });
+
+        // Fetch dashboard data from Firebase
+        function fetchDashboardData() {
+            const dataRef = db.ref('images');
+            dataRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    document.getElementById('data-table-body').innerHTML = '<tr><td colspan="4">No data available</td></tr>';
+                    document.getElementById('all-data-table').innerHTML = '<tr><td colspan="4">No data available</td></tr>';
+                    document.getElementById('recent-location').innerText = 'No data available';
+                    document.getElementById('recent-image').src = '';
+                    document.getElementById('recent-image-time').innerText = '';
+                    return;
+                }
+
+                const keys = Object.keys(data).reverse();
+
+                const tableBody = document.getElementById('data-table-body');
+                tableBody.innerHTML = '';
+                const allDataBody = document.getElementById('all-data-table');
+                allDataBody.innerHTML = '<thead><tr><th>Date</th><th>Time</th><th>Location</th><th>Trigger Type</th></tr></thead><tbody>';
+
+                keys.forEach((key) => {
+                    const { image, metadata } = data[key];
+                    const parsedData = parseMetadata(metadata);
+
+                    const row = `<tr>
+                                    <td>${parsedData.date}</td>
+                                    <td>${parsedData.time}</td>
+                                    <td>${parsedData.location}</td>
+                                    <td>${parsedData.triggerType}</td>
+                                </tr>`;
+                    if (tableBody.rows.length < 5) tableBody.innerHTML += row;
+
+                    allDataBody.innerHTML += row;
+                });
+
+                allDataBody.innerHTML += '</tbody>';
+
+                if (keys.length > 0) {
+                    const recentData = data[keys[0]];
+                    const parsedData = parseMetadata(recentData.metadata);
+                    document.getElementById('recent-location').innerText = parsedData.location;
+                    const recentImageElement = document.getElementById('recent-image');
+                    recentImageElement.src = `data:image/jpeg;base64,${recentData.image}`;
+                    recentImageElement.setAttribute('data-base64', recentData.image);
+                    recentImageElement.setAttribute('data-date', parsedData.date);
+                    recentImageElement.setAttribute('data-time', parsedData.time);
+                    recentImageElement.removeEventListener('click', showModal);
+                    recentImageElement.addEventListener('click', showModal);
+
+                    document.getElementById('recent-image-time').innerText = `Captured on: ${parsedData.date} at ${parsedData.time}`;
+                }
+            });
+        }
+
+        function showModal(event) {
+            const base64 = event.target.getAttribute('data-base64');
+            const date = event.target.getAttribute('data-date');
+            const time = event.target.getAttribute('data-time');
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = `data:image/jpeg;base64,${base64}`;
+            modal.querySelector('#modal-content').insertAdjacentHTML('beforeend', `<p>Captured on: ${date} at ${time}</p>`);
+            modal.style.display = 'flex';
+        }
+
+        function clearModalContent(modalId) {
+            const modal = document.getElementById(modalId);
+            const modalContent = modal.querySelector('#modal-content');
+            const extraInfo = modalContent.querySelector('p');
+            if (extraInfo) {
+                extraInfo.remove();
+            }
+        }
+
+        document.getElementById('view-all-data').addEventListener('click', () => {
+            document.getElementById('data-modal').style.display = 'flex';
+        });
+
+        document.getElementById('view-all-images').addEventListener('click', () => {
+            document.getElementById('password-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('image-modal').style.display = 'none';
+            clearModalContent('image-modal');
+        });
+
+        document.getElementById('close-data-modal').addEventListener('click', () => {
+            document.getElementById('data-modal').style.display = 'none';
+        });
+
+        document.getElementById('close-images-modal').addEventListener('click', () => {
+            document.getElementById('all-images-modal').style.display = 'none';
+        });
+
+        document.getElementById('close-password-modal').addEventListener('click', () => {
+            document.getElementById('password-modal').style.display = 'none';
+        });
+
+        document.getElementById('logout').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        window.onload = () => {
+            fetchDashboardData();
+        };
+    </script>
+
+</body>
+</html>
